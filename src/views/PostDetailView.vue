@@ -148,7 +148,8 @@ onMounted(() => {
 
           <div class="divider my-2"></div>
 
-          <p class="text-lg text-neutral-700 whitespace-pre-wrap">{{ post.postText }}</p>
+          <MarkdownView v-if="post.postText" :content="post.postText" class="prose" />
+          <!-- <p class="text-lg text-neutral-700 whitespace-pre-wrap">{{ post.postText }}</p> -->
 
           <div class="divider my-4"></div>
 
@@ -174,9 +175,13 @@ onMounted(() => {
                 data-tip="点赞"
                 @click="handleLike"
               >
+                <div class="tooltip-content">
+                  <div class="animate-bounce text-red-400 text-2xl font-black">喜欢！！！</div>
+                </div>
                 <Like theme="outline" size="16" class="text-neutral-500" strokeLinejoin="miter" />
                 <span class="text-neutral-600">{{ post.likeCount }}</span>
               </div>
+
               <div class="flex items-center gap-1 tooltip" data-tip="评论">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

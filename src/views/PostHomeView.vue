@@ -6,6 +6,7 @@ import { formatDateTime } from '@/utils/date'
 import { Like, Logout, Pencil, PreviewOpen, User } from '@icon-park/vue-next'
 import { useUserStore } from '@/stores/user'
 import message from '@/plugins/message'
+import { getAvatarUrl } from '@/api/user'
 const router = useRouter()
 const userStore = useUserStore()
 
@@ -79,12 +80,12 @@ const isPostLiked = (postId) => {
 // 获取用户已点赞的帖子
 const fetchLikedPosts = async () => {
   if (!userStore.isLoggedIn || !userStore.userId) return
-  
+
   try {
     const res = await getUserLikedPosts(userStore.userId)
     if (res.data && Array.isArray(res.data)) {
       // 提取已点赞帖子的ID
-      likedPostIds.value = res.data.map(post => post.postId)
+      likedPostIds.value = res.data.map((post) => post.postId)
     }
   } catch (error) {
     console.error('获取点赞帖子失败：', error)
@@ -182,10 +183,7 @@ onMounted(() => {
           <div class="dropdown dropdown-end">
             <div class="avatar" tabindex="0" role="button">
               <div class="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <img
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  alt="用户头像"
-                />
+                <img :src="getAvatarUrl(userStore.email)" alt="用户头像" />
               </div>
             </div>
             <ul
@@ -227,7 +225,7 @@ onMounted(() => {
             <div
               v-for="post in posts"
               :key="post.postId"
-              class="card bg-base-100 hover:shadow-xl transition-shadow duration-300 mb-6 overflow-hidden cursor-pointer"
+              class="card bg-base-100 hover:shadow-xl transition-shadow duration-300 mb-6 overflow-hidden cursor-pointer h-40"
               @click="router.push(`/post/${post.postId}`)"
             >
               <div class="card-body">
@@ -235,7 +233,7 @@ onMounted(() => {
                   <h2 class="card-title text-neutral-800">{{ post.postTitle }}</h2>
                   <div class="badge badge-ghost text-neutral-600">{{ post.authorName }}</div>
                 </div>
-                <p class="my-4 text-neutral-700">{{ post.postText }}</p>
+                <MarkdownView :content="post.postText" />
                 <div class="divider my-2"></div>
                 <div class="flex justify-between items-center">
                   <div class="text-xs text-neutral-500">{{ formatDateTime(post.createTime) }}</div>

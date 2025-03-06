@@ -60,3 +60,14 @@ export function updateUsername(data) {
     data,
   })
 }
+
+/**
+ * 获取用户头像URL
+ * @param {string} email - 用户邮箱
+ * @returns {string} 头像URL
+ */
+export function getAvatarUrl(email) {
+  if (!email) return ''
+  const qqEmail = email.toLowerCase()
+  return `https://q2.qlogo.cn/headimg_dl?dst_uin=${qqEmail.split('@')[0]}&spec=640`
+}

@@ -22,14 +22,11 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://localhost:8080', //目标请求的地址
-        // 解决跨域问题
-        changeOrigin: true,
-        ws: true, // 启用WebSocket代理
-        rewrite: (path) => {
-          console.log('🚀 ~ path:', path)
-          return path.replace(/^\/api/, '') //是否替换掉地址栏的/api
-        },
+        target: 'http://127.0.0.1:8080/api', // 代理目标地址
+        changeOrigin: true, // 修改请求头中的 Origin
+        rewrite: (path) => path.replace(/^\/api/, ''), // 重写路径，去掉 /api 前缀
+        secure: false, // 如果目标是 HTTP，可设置为 false
+        ws: true, // 支持 WebSocket 代理
       },
     },
   },

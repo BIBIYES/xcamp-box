@@ -7,7 +7,7 @@ import { formatDateTime } from '@/utils/date'
 import { PreviewOpen, Like, Edit, Delete, Left } from '@icon-park/vue-next'
 import message from '@/plugins/message'
 import { useRouter } from 'vue-router'
-import { updateUsername } from '@/api/user'
+import { updateUsername, getAvatarUrl } from '@/api/user'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -190,10 +190,7 @@ const submitUsername = async () => {
             <!-- 头像区域 -->
             <div class="avatar">
               <div class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <img
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  alt="用户头像"
-                />
+                <img :src="getAvatarUrl(userStore.email)" alt="用户头像" />
               </div>
             </div>
 
@@ -301,7 +298,7 @@ const submitUsername = async () => {
                   </button>
                 </div>
               </div>
-              <p class="my-4 text-neutral-700">{{ post.postText }}</p>
+              <MarkdownView :content="post.postText" />
               <div class="divider my-2"></div>
               <div class="flex justify-between items-center">
                 <div class="text-xs text-neutral-500">{{ formatDateTime(post.createTime) }}</div>
